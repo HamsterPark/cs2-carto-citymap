@@ -1,12 +1,14 @@
 # CS2 Carto City Map Renderer
 
-Turn a **Cities: Skylines II** save into publication-quality city maps — rendered in **pure Python (matplotlib)** from data exported by the **Carto** mod. No QGIS, no geopandas.
+Turn a **Cities: Skylines II** save into publication-quality city maps — rendered in **pure Python (matplotlib)** from data exported by the **Carto** mod (a separate, third-party in-game mod). No QGIS, no geopandas.
 
 **English** · [中文说明](README.zh-CN.md)
 
 ![Base city map](gallery/city.png)
 
 One Carto export → **13 cartographic maps**: a detailed base city map plus thematic overlays (highways, public transit, metro, rail, tram, bus, shipping, waterways, a minimal street map) and terrain hillshade.
+
+> **Where the data comes from.** All input data is produced **inside the game** by the **Carto** mod — an existing third-party mod (**not** part of this project). In Cities: Skylines II, install Carto from Paradox Mods and use it to export your city; it writes the GeoJSON / GeoTIFF layers that this renderer reads. This project does not generate or scrape any data — it only renders Carto's output. The example city in [Releases](../../releases) is simply one such Carto export.
 
 ---
 
@@ -88,7 +90,7 @@ python render_map.py --zoning   # also the zoning map (reads the large file, slo
 
 ## Using your own city
 
-1. In Cities: Skylines II, export your save with the **Carto** mod (available on Paradox Mods). Carto writes **GeoJSON**, **GeoTIFF** and Shapefile layers.
+1. In Cities: Skylines II, export your save with the **Carto** mod — a third-party mod (not part of this project), available on Paradox Mods. Carto writes **GeoJSON**, **GeoTIFF** and Shapefile layers.
 2. Copy the layers this project uses into the repo:
    - `Carto/GeoJSON/` — `Zoning_Boundary.json`, `Building_Boundary.json`, `Network_Centerline.json`, `Route_Centerline.json`, `POI_Location.json` (and optionally `Area_Boundary.json`)
    - `Carto/GeoTIFF/` — `Elevation.tif`, `Depth.tif`
@@ -135,6 +137,6 @@ Source data (`Carto/`) and full-resolution renders are **not** committed — get
 
 ## Acknowledgements
 
-- The **Carto** mod for Cities: Skylines II, which exports the underlying GeoJSON / GeoTIFF data.
+- The **Carto** mod for Cities: Skylines II — an independent third-party mod (not affiliated with this project) — which exports the underlying GeoJSON / GeoTIFF data.
 - Cities: Skylines II © Colossal Order / Paradox Interactive. This is an unofficial fan project.
 - The renderer was developed iteratively with the help of **Claude Code** (Anthropic).

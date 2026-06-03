@@ -1,12 +1,14 @@
 # CS2 Carto 城市地图渲染器
 
-把 **《都市天际线 2》(Cities: Skylines II)** 的存档,渲染成出版级城市地图——**纯 Python(matplotlib)** 实现,数据来自 **Carto** mod 的导出。无需 QGIS,无需 geopandas。
+把 **《都市天际线 2》(Cities: Skylines II)** 的存档,渲染成出版级城市地图——**纯 Python(matplotlib)** 实现,数据来自 **Carto** mod(一个独立的第三方游戏内插件)的导出。无需 QGIS,无需 geopandas。
 
 [English](README.md) · **中文**
 
 ![城市底图](gallery/city.png)
 
 一份 Carto 导出 → **13 张地图**:一张精细的城市底图,外加多张专题叠加图(高速公路、公共交通、地铁、铁路、有轨电车、公交、航运、航道、极简街道图),以及地形晕渲图。
+
+> **数据从哪来。** 全部输入数据都是**在游戏里**用 **Carto** mod 导出的——它是一个现成的第三方插件(**并非**本项目制作)。在《都市天际线 2》里从 Paradox Mods 安装 Carto,用它导出你的城市,就会生成本渲染器读取的 GeoJSON / GeoTIFF 图层。本项目不生成、也不抓取任何数据,只负责渲染 Carto 的导出结果。[Releases](../../releases) 里的示例城市,就是这样一份 Carto 导出而已。
 
 ---
 
@@ -88,7 +90,7 @@ python render_map.py --zoning   # 另外画分区图(要读大文件,较慢)
 
 ## 使用你自己的城市
 
-1. 在《都市天际线 2》里用 **Carto** mod(Paradox Mods 上可获取)导出存档。Carto 会写出 **GeoJSON**、**GeoTIFF** 和 Shapefile 图层。
+1. 在《都市天际线 2》里用 **Carto** mod 导出存档——Carto 是第三方插件(并非本项目制作),可在 Paradox Mods 获取。它会写出 **GeoJSON**、**GeoTIFF** 和 Shapefile 图层。
 2. 把本项目用到的图层拷进仓库:
    - `Carto/GeoJSON/` — `Zoning_Boundary.json`、`Building_Boundary.json`、`Network_Centerline.json`、`Route_Centerline.json`、`POI_Location.json`(以及可选的 `Area_Boundary.json`)
    - `Carto/GeoTIFF/` — `Elevation.tif`、`Depth.tif`
@@ -135,6 +137,6 @@ python render_map.py --zoning   # 另外画分区图(要读大文件,较慢)
 
 ## 致谢
 
-- 《都市天际线 2》的 **Carto** mod,它导出了底层的 GeoJSON / GeoTIFF 数据。
+- 《都市天际线 2》的 **Carto** mod——一个独立的第三方插件(与本项目无隶属关系),它导出了底层的 GeoJSON / GeoTIFF 数据。
 - Cities: Skylines II © Colossal Order / Paradox Interactive。本项目为非官方同人项目。
 - 本渲染器借助 **Claude Code**(Anthropic)迭代开发完成。
