@@ -1,0 +1,21 @@
+# ---- Large source data: download from the GitHub Release instead of committing ----
+Carto/
+carto-example-data.zip
+
+# ---- Full-resolution rendered maps (regenerate by running the script; small previews live in gallery/) ----
+/map_*.png
+
+# ---- Scratch / temp files (inspection scripts, previews, logs) ----
+_*.py
+_*.png
+*.log
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
