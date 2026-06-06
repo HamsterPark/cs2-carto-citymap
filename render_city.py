@@ -572,6 +572,7 @@ def main():
         p = ft["properties"]; obj = p.get("Object"); cat = str(p.get("Category", ""))
         c = ft["geometry"]["coordinates"]; xy = (c[0], c[1])
         if obj == "POITransport":
+            # 主类型(互斥:每个枢纽一个主标记)
             if   "Building" in cat and "PassengerTrain" in cat: mk["train"].append(xy)
             elif "CargoTrain" in cat:                           mk["cargo_train"].append(xy)  # 货运火车站(含港口内)
             elif "Building" in cat and "Subway" in cat:         mk["metro"].append(xy)
@@ -579,9 +580,11 @@ def main():
             elif "PassengerAirplane" in cat:                    mk["airport"].append(xy)
             elif "Building" in cat and "CargoShip" in cat:      mk["port_cargo"].append(xy)
             elif "Building" in cat and "PassengerShip" in cat:  mk["port_pax"].append(xy)
-            elif "Building" in cat and "Ferry" in cat:          mk["ferry"].append(xy)
-            elif "StopBus" in cat:  mk["bus"].append(xy)
-            elif "StopTram" in cat: mk["tram"].append(xy)
+            # 摆渡/公交/电车(非互斥:机场·火车站枢纽带的公交·摆渡站,也是公交·摆渡站,照样补标)
+            if   "Building" in cat and "Ferry" in cat:          mk["ferry"].append(xy)        # 摆渡停靠站(建筑)
+            elif "StopFerry" in cat:                            mk["_ferrystop"].append(xy)   # 摆渡终点站等(独立停靠点)
+            if "StopBus" in cat or "BuildingBus" in cat:        mk["bus"].append(xy)          # 含建筑附属/枢纽内公交站
+            if "StopTram" in cat:                               mk["tram"].append(xy)
         elif obj == "POIPublic":
             nm = str(p.get("Name", ""))
             if   "Health" in cat:                  mk["hospital"].append(xy)
@@ -599,6 +602,10 @@ def main():
              if not any(abs(pt[0]-u) < 0.0005 and abs(pt[1]-v) < 0.0005 for u, v in mk["metro"])]
     mk["metro"] = mk["metro"] + extra                              # 火车站等建筑附带的地铁站(独立 StopSubway)补入
     mk.pop("_substop", None)
+    fextra = [pt for pt in mk["_ferrystop"]
+              if not any(abs(pt[0]-u) < 0.0003 and abs(pt[1]-v) < 0.0003 for u, v in mk["ferry"])]
+    mk["ferry"] = mk["ferry"] + fextra                             # 摆渡终点站(独立 StopFerry,不与停靠站建筑同点)补入
+    mk.pop("_ferrystop", None)
     for k in ("tram", "train", "cargo_train", "port_cargo", "port_pax", "ferry",
               "hospital", "police", "fire", "gov", "uni", "middle", "elementary", "research"):
         mk[k] = merge_pts(mk[k])                                   # 主楼+附属建筑合并（公交/地铁不合并）
